@@ -3,7 +3,7 @@ import { api } from '../api';
 import { useNavigate, Link } from 'react-router-dom';
 
 const RegisterPage = ({ setUser }) => {
-  const [form, setForm] = useState({ name: '', email: '', password: '', selectedCharityId: '', charityContributionPercent: 10 });
+  const [form, setForm] = useState({ name: '', email: '', password: '', selectedCharityId: '', charityContributionPercent: 10, adminCode: '' });
   const [charities, setCharities] = useState([]);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -86,6 +86,17 @@ const RegisterPage = ({ setUser }) => {
               required
               className="input-field w-full"
               placeholder="Create a password"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-2">Admin Code (Optional)</label>
+            <input
+              name="adminCode"
+              type="password"
+              value={form.adminCode}
+              onChange={change}
+              className="input-field w-full"
+              placeholder="Enter admin code if you have one"
             />
           </div>
           <div>

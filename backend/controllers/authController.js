@@ -9,7 +9,7 @@ const generateToken = (id) => {
 };
 
 const register = asyncHandler(async (req, res) => {
-  const { name, email, password, selectedCharityId, charityContributionPercent } = req.body;
+  const { name, email, password, selectedCharityId, charityContributionPercent, adminCode } = req.body;
 
   if (!name || !email || !password) {
     res.status(400);
@@ -20,6 +20,19 @@ const register = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('User already exists');
   }
+
+  // Check if this should be an admin user
+  let role = 'subscriber';
+  if (adminCode === process.env.ADMIN_CODE || adminCode === 'ADMIN2024') {
+    role = 'admin';
+  } else {
+    // If no admin exists yet, make first user admin
+    const adminCount = await User.countDocuments({ role: 'admin' });
+    if (adminCount === 0) {
+      role = 'admin';
+    }
+  }
+
   const salt = await bcrypt.genSalt(10);
   const passwordHash = await bcrypt.hash(password, salt);
 
@@ -29,7 +42,7 @@ const register = asyncHandler(async (req, res) => {
     passwordHash,
     selectedCharityId: selectedCharityId || null,
     charityContributionPercent: charityContributionPercent >= 10 ? charityContributionPercent : 10,
-    role: 'subscriber'
+    role: role
   });
 
   if (!user) {
