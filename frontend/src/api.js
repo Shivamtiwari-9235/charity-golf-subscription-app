@@ -1,8 +1,13 @@
 import axios from 'axios';
 
-const apiBaseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+let apiBaseUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
-if (!process.env.REACT_APP_API_URL) {
+if (apiBaseUrl && apiBaseUrl.startsWith('@react_app_api_url')) {
+  console.warn('REACT_APP_API_URL placeholder detected - falling back to hardcoded production API URL');
+  apiBaseUrl = 'https://charity-app-3fwv.onrender.com/api';
+}
+
+if (!process.env.REACT_APP_API_URL || apiBaseUrl === 'http://localhost:5000/api') {
   console.warn('REACT_APP_API_URL is not configured; defaulting to http://localhost:5000/api');
 }
 
