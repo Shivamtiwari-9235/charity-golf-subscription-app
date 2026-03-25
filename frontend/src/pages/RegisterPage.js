@@ -21,18 +21,25 @@ const RegisterPage = ({ setUser }) => {
       setUser(data);
       navigate('/dashboard');
     } catch (err) {
-      const errorMessage =
-        err.response?.data?.message ||
-        err?.message ||
-        'Registration failed: network/server not reachable';
+      const serverMessage = err.response?.data?.message;
+      let errorMessage = serverMessage || err?.message || 'Registration failed: network/server not reachable';
+
+      if (err.response?.status === 400 && serverMessage === 'User already exists') {
+        errorMessage = 'Email already registered. Please login instead.';
+      }
+
       setError(errorMessage);
-      console.error('Registration request failed', {
-        requestURL: `${api.defaults.baseURL}/auth/register`,
-        status: err.response?.status,
-        responseData: err.response?.data,
-        message: err.message,
-        exception: err,
-      });
+
+      // only log unexpected errors (not validation for existing users)
+      if (!(err.response?.status === 400 && serverMessage === 'User already exists')) {
+        console.error('Registration request failed', {
+          requestURL: `${api.defaults.baseURL}/auth/register`,
+          status: err.response?.status,
+          responseData: err.response?.data,
+          message: err.message,
+          exception: err,
+        });
+      }
     }
   };
 

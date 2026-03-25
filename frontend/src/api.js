@@ -13,7 +13,7 @@ if (!process.env.REACT_APP_API_URL || apiBaseUrl === 'http://localhost:5000/api'
 
 export const api = axios.create({
   baseURL: apiBaseUrl,
-  timeout: 12000,
+  timeout: 30000, // 30s to avoid transient network timeouts on slow connections
   headers: {
     'Content-Type': 'application/json',
   },
