@@ -1,30 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api } from './api';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-
-export const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
-  timeout: 12000,
-});
-
-api.interceptors.request.use((config) => {
-  if (!config.baseURL) {
-    throw new Error('API baseURL is missing');
-  }
-  return config;
-});
-
-// Optional: helps debugging in console
-if (!process.env.REACT_APP_API_URL) {
-  console.warn('REACT_APP_API_URL is not configured; defaulting to http://localhost:5000/api');
-}
 import DashboardPage from './pages/DashboardPage';
 import AdminPage from './pages/AdminPage';
-
-axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 function App() {
   const [user, setUser] = useState(() => {

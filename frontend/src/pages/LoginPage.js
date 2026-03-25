@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { api } from '../App';
+import { api } from '../api';
 import { useNavigate, Link } from 'react-router-dom';
 
 const LoginPage = ({ setUser }) => {
@@ -21,7 +21,7 @@ const LoginPage = ({ setUser }) => {
         'Login failed: network/server not reachable';
       setError(errorMessage);
       console.error('Login request failed', {
-        requestURL: `${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/auth/login`,
+        requestURL: `${api.defaults.baseURL}/auth/login`,
         status: err.response?.status,
         responseData: err.response?.data,
         message: err.message,

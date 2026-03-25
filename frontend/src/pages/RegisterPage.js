@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { api } from '../App';
+import { api } from '../api';
 import { useNavigate, Link } from 'react-router-dom';
 
 const RegisterPage = ({ setUser }) => {
@@ -27,7 +27,7 @@ const RegisterPage = ({ setUser }) => {
         'Registration failed: network/server not reachable';
       setError(errorMessage);
       console.error('Registration request failed', {
-        requestURL: `${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/auth/register`,
+        requestURL: `${api.defaults.baseURL}/auth/register`,
         status: err.response?.status,
         responseData: err.response?.data,
         message: err.message,

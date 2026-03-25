@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../api';
 
 const DashboardPage = ({ user }) => {
   const [scores, setScores] = useState([]);
@@ -19,7 +19,7 @@ const DashboardPage = ({ user }) => {
 
   const fetchProfile = async () => {
     try {
-      const { data } = await axios.get('/auth/me');
+      const { data } = await api.get('/auth/me');
       setProfile(data);
     } catch (err) {
       setMessage('Unable to fetch profile');
@@ -28,7 +28,7 @@ const DashboardPage = ({ user }) => {
 
   const fetchScores = async () => {
     try {
-      const { data } = await axios.get('/scores');
+      const { data } = await api.get('/scores');
       setScores(data);
     } catch (err) {
       setMessage('Unable to fetch scores');
@@ -38,8 +38,7 @@ const DashboardPage = ({ user }) => {
   const addScore = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/scores', { value: Number(value), date });
-      setScores(data);
+      const { data } = await api.post('/scores', { value: Number(value), date });      setScores(data);
       setValue('');
       setDate('');
       setMessage('Score saved successfully!');
@@ -65,7 +64,7 @@ const DashboardPage = ({ user }) => {
 
     setCancelling(true);
     try {
-      await axios.post('/stripe/cancel-subscription');
+      await api.post('/stripe/cancel-subscription');
       setMessage('Subscription cancelled successfully. You will continue to have access until the end of your billing period.');
       // Refresh profile to update subscription status
       fetchProfile();

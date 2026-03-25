@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { api } from '../api';
 import { useNavigate } from 'react-router-dom';
 
 const AdminPage = ({ user }) => {
@@ -20,7 +20,7 @@ const AdminPage = ({ user }) => {
 
   const fetchReport = async () => {
     try {
-      const { data } = await axios.get('/admin/reports');
+      const { data } = await api.get('/admin/reports');
       setReport(data);
     } catch (err) {
       setError(err.response?.data?.message || 'Unable to get report');
@@ -29,7 +29,7 @@ const AdminPage = ({ user }) => {
 
   const fetchDraws = async () => {
     try {
-      const { data } = await axios.get('/draws');
+      const { data } = await api.get('/draws');
       setDraws(data);
     } catch (err) {
       setError('Unable to fetch draws');
@@ -38,7 +38,7 @@ const AdminPage = ({ user }) => {
 
   const fetchWinners = async () => {
     try {
-      const { data } = await axios.get('/winners');
+      const { data } = await api.get('/winners');
       setWinners(data);
     } catch (err) {
       setError('Unable to fetch winners');
@@ -50,7 +50,7 @@ const AdminPage = ({ user }) => {
     const year = prompt('Year:');
     if (!month || !year) return;
     try {
-      await axios.post('/draws', { month: Number(month), year: Number(year) });
+      await api.post('/draws', { month: Number(month), year: Number(year) });
       fetchDraws();
       setMessage('Draw created successfully');
       setTimeout(() => setMessage(''), 3000);
@@ -61,7 +61,7 @@ const AdminPage = ({ user }) => {
 
   const simulateDraw = async (drawId) => {
     try {
-      await axios.post(`/draws/${drawId}/simulate`);
+      await api.post(`/draws/${drawId}/simulate`);
       fetchDraws();
       setMessage('Draw simulated successfully');
       setTimeout(() => setMessage(''), 3000);
@@ -72,7 +72,7 @@ const AdminPage = ({ user }) => {
 
   const publishDraw = async (drawId) => {
     try {
-      await axios.post(`/draws/${drawId}/publish`);
+      await api.post(`/draws/${drawId}/publish`);
       fetchDraws();
       setMessage('Draw published successfully');
       setTimeout(() => setMessage(''), 3000);
