@@ -37,7 +37,9 @@ const register = asyncHandler(async (req, res) => {
     throw new Error('Invalid user data');
   }
 
-  await sendEmail(user.email, 'Welcome to Golf Charity', `Hi ${user.name}, welcome!`);
+  // send welcome email in background to avoid slowing down registration
+  sendEmail(user.email, 'Welcome to Golf Charity', `Hi ${user.name}, welcome!`) // no await
+    .catch((err) => console.error('Background welcome email failed:', err));
 
   res.status(201).json({
     _id: user._id,

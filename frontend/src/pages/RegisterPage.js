@@ -28,6 +28,10 @@ const RegisterPage = ({ setUser }) => {
         errorMessage = 'Email already registered. Please login instead.';
       }
 
+      if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
+        errorMessage = 'Request timed out. Please try again in a moment.';
+      }
+
       setError(errorMessage);
 
       // only log unexpected errors (not validation for existing users)

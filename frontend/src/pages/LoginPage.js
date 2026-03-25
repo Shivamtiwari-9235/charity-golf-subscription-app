@@ -15,10 +15,15 @@ const LoginPage = ({ setUser }) => {
       setUser(data);
       navigate('/dashboard');
     } catch (err) {
-      const errorMessage =
+      let errorMessage =
         err.response?.data?.message ||
         err?.message ||
         'Login failed: network/server not reachable';
+
+      if (err.code === 'ECONNABORTED' || err.message?.includes('timeout')) {
+        errorMessage = 'Request timed out. Please try again in a moment.';
+      }
+
       setError(errorMessage);
       console.error('Login request failed', {
         requestURL: `${api.defaults.baseURL}/auth/login`,
