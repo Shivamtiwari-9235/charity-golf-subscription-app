@@ -1,6 +1,6 @@
 [build]
   base = "frontend"
-  command = "npm ci --unsafe-perm && chmod +x node_modules/.bin/react-scripts && npm run build"
+  command = "npm install --unsafe-perm --no-audit --no-fund && chmod +x node_modules/.bin/react-scripts && npm run build"
   publish = "build"
 
 [build.environment]
